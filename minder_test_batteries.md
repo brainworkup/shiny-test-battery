@@ -41,6 +41,7 @@
 -Step-down for dementia or poor effort: RBANS or MoCA
 
 ## Full A / KP NP Full A
+
 **WRAT-5 Word Reading (ppt) 
 **CVLT-3 Immediate & Short Delay (QI)
 **WMS-IV Visual Reproduction I (QI)
@@ -421,7 +422,7 @@ Raven’s-2 Progressive Matrices (Nonverbal)
 **MIGDAS-2 Interview (paper booklet)—ages 3+
 **CARS-2 clinician rating (Drive–print out)
 
-## KP Dev (SPANISH)
+### KP Dev (SPANISH)
 STILL NEED TO ADD HERE…. 
 
 ## Phase 1D
@@ -535,8 +536,9 @@ WIAT-4 (QI)— ages 4-50
         		 **Word Reading (PPT)
  **Spelling
 		 **Numerical operations
-Phase 2D
-PHASE 2D LD (Adult)    
+
+## Phase 2D
+### PHASE 2D LD (Adult)    
 WIAT-4 (QI)— ages 4-50 
     **Word Reading (PPT) (already completed in Phase 1)
     **Spelling (already completed in Phase 1)
@@ -579,8 +581,10 @@ SYMPTOM INVENTORIES (sent out a week in advance):
 DAY OF TESTING: 
 **MIGDAS-2 Interview (paper booklet)—ages 3+
 **CARS-2 clinician rating (Drive–print out)
-KP Psych MH
-KP Psych MH (Adult)
+
+## KP Psych MH
+
+### KP Psych MH (Adult)
 SYMPTOM INVENTORIES (sent out a week in advance): 
 NONE
 
@@ -620,6 +624,7 @@ Based on DSM-CCS, can go into more detail on the MINI/add additional measures:
 -MFQ (Mood and Feelings Questionnaire ages 6+) for depression–in drive
 
 ## KP Psych ADHD/ASD 
+
 ### KP Psych ADHD/ASD  (Adult, 17 and older)
 SYMPTOM INVENTORIES (sent out a week in advance):
 **BASC-3 (Q-global)—ages 2-25

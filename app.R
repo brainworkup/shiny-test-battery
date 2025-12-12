@@ -257,16 +257,116 @@ tests <- data.frame(
   stringsAsFactors = FALSE
 )
 
+# ---- Extend test catalog with new batteries ----
+
+additional_tests <- tibble::tribble(
+  ~battery_group,                             ~phase,                          ~test_name,                                                                              ~required, ~notes,
+
+  # ---------------- Full A / KP NP Full A (Spanish) ----------------
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "Trails A/B (send trails sheets)",                                                      TRUE,      "Full A Spanish; core processing speed / set-shifting; send trails sheets",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Digit Span (QI)",                                                              TRUE,      "Full A Spanish; core attention/working memory",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Coding (Spanish; QI)",                                                         TRUE,      "Full A Spanish; required processing speed subtest",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Symbol Search (Spanish; QI)",                                                  TRUE,      "Full A Spanish; required processing speed subtest",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "BNE Story Memory",                                                                     TRUE,      "Batería Neuropsicológica en Español (BNE); story memory",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "BNE Verbal Fluency",                                                                   TRUE,      "BNE verbal fluency",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "BNE List Learning",                                                                    TRUE,      "BNE list learning / verbal memory",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "BNE Stroop",                                                                           TRUE,      "BNE Stroop; inhibition / cognitive control",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Visual Puzzles (Spanish; QI)",                                                 FALSE,     "Spanish-adapted WAIS-IV Visual Puzzles",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Matrix Reasoning (Spanish; QI)",                                               FALSE,     "Spanish-adapted WAIS-IV Matrix Reasoning",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Arithmetic (Spanish; QI)",                                                     FALSE,     "Spanish-adapted WAIS-IV Arithmetic",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Vocabulary (Spanish; QI)",                                                     FALSE,     "Spanish-adapted WAIS-IV Vocabulary",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WAIS-IV Similarities (Spanish; QI)",                                                   FALSE,     "Spanish-adapted WAIS-IV Similarities",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WCST-64 (Spanish; PARiConnect)",                                                       FALSE,     "WCST-64 Spanish version via PARiConnect",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "Boston Naming (Spanish; TBD)",                                                         FALSE,     "Spanish Boston Naming; parameters TBD (\"??\" in notes)",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "WMS-III (Spanish; TBD)",                                                               FALSE,     "WMS-III Spanish; details TBD",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "CVLT (Spanish; TBD)",                                                                  FALSE,     "Spanish CVLT; details TBD",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "RBANS (Spanish; TBD)",                                                                 FALSE,     "Spanish RBANS; details TBD",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "Clock Drawing (ppt)",                                                                  TRUE,      "Spanish Full A; clock drawing (PPT)",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "TOMM",                                                                                 FALSE,     "PVT; Spanish battery context",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "Beck Anxiety (Spanish)",                                                               TRUE,      "Spanish Beck Anxiety",
+  "Full A / KP NP Full A (Spanish)",          "Full A Spanish",                "Beck Depression (Spanish)",                                                            TRUE,      "Spanish Beck Depression",
+
+  # ---------------- Full A Seizure/Full A (or D) TBI ----------------
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "Word Choice / Reliable Digit Span (WISC-V for kids)",                                  TRUE,      "Full A Seizure/TBI; PVT / effort; use Word Choice or WISC-V RDS in kids",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "WRAT-IV Reading / WIAT-IV Full D (for kids)",                                          TRUE,      "Full A Seizure/TBI; basic academic screening; WRAT-IV vs WIAT-IV in kids",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "WAIS-IV (8-subtest FSIQ)",                                                             TRUE,      "Full A Seizure/TBI; core WAIS-IV FSIQ (8-subtest)",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "CVLT-3 (50-item Recognition List) / CVLT-C",                                           TRUE,      "Full A Seizure/TBI; verbal learning (adult CVLT-3 vs CVLT-C for kids)",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "WMS-IV Logical Memory (LM) / VPA (for left temporal lobe cases)",                      TRUE,      "Full A Seizure/TBI; LM / VPA for temporal lobe epilepsy cases",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "BVMT-R / WMS-IV Visual Reproduction",                                                  TRUE,      "Full A Seizure/TBI; visual learning/memory (BVMT-R or WMS VR)",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "Boston Naming Test (BNT; 60 items; PPVT-5 if Vocab < 7 for kids)",                     TRUE,      "Full A Seizure/TBI; naming; PPVT-5 substitution in low-vocab kids",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "Trails A & B / D-KEFS (for kids)",                                                     TRUE,      "Full A Seizure/TBI; Trails or D-KEFS variants in kids",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "FAS / D-KEFS Verbal Fluency (for kids)",                                               TRUE,      "Full A Seizure/TBI; phonemic verbal fluency; D-KEFS for kids",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "Animals (semantic fluency)",                                                           TRUE,      "Full A Seizure/TBI; semantic fluency (\"Animals ride\")",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "Rey-O Complex Figure (copy only; copy & recall for kids)",                             TRUE,      "Full A Seizure/TBI; Rey-O copy; copy + recall in kids",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "D-KEFS Color-Word Interference",                                                       TRUE,      "Full A Seizure/TBI; D-KEFS CWIT",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "Grooved Pegboard",                                                                     FALSE,     "Full A Seizure/TBI; optional; Kettering requests, not Texas Children’s",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "QOLIE-31 (seizure only)",                                                              TRUE,      "Full A Seizure/TBI; QOLIE-31 for seizure cases",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "BDI / GDS",                                                                            TRUE,      "Full A Seizure/TBI; depression screening (BDI or GDS)",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "BAI / GAI",                                                                            TRUE,      "Full A Seizure/TBI; anxiety screening (BAI or GAI)",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "MMPI-3",                                                                               FALSE,     "Full A Seizure/TBI; optional personality inventory (PRN)",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "WCST-64",                                                                              FALSE,     "Full A Seizure/TBI; optional WCST-64",
+  "Full A Seizure/TBI",                       "Full A Seizure/TBI",            "Judgment of Line Orientation (JOLO; short form)",                                      FALSE,     "Full A Seizure/TBI; optional JOLO short form",
+
+  # ---------------- Full D / KP NP Full D ----------------
+  # Symptom inventories (sent out in advance)
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "BASC-3 (Q-global)",                                                                    TRUE,      "Full D; broad behavior rating; Q-global; ages 2–25",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "BRIEF-A (PARiConnect)",                                                                TRUE,      "Full D; adult executive function rating (BRIEF-A)",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "ABAS-3 (WPS)",                                                                         TRUE,      "Full D; adaptive functioning (ABAS-3; self + informant)",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "BAARS (BAARS Form; 19+)",                                                              TRUE,      "Full D; adult ADHD rating (BAARS)",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "SRS-2 (WPS)",                                                                          TRUE,      "Full D; autism-related social responsiveness (SRS-2)",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "MIGDAS-2 Questionnaire (parent/caregiver; shortened Google Form)",                    TRUE,      "Full D; parent/caregiver MIGDAS-2 questionnaire",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "CARS-2 (Clinician rating)",                                                            TRUE,      "Full D; CARS-2 clinician rating scale",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "BAI (18+ mood questionnaire)",                                                         TRUE,      "Full D; Beck Anxiety Inventory for adults",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "BDI-II (18+ mood questionnaire)",                                                      TRUE,      "Full D; Beck Depression Inventory-II for adults",
+  "Full D / KP NP Full D",                    "Full D – Symptom inventories",  "PCL (PTSD checklist; 18+)",                                                            TRUE,      "Full D; PTSD Checklist for DSM (PCL) for adults",
+
+  # Cognitive testing (Full D)
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Coding (QI)",                                                                  TRUE,      "Full D; WAIS-IV Coding (QI); mail response sheet if remote",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Symbol Search (QI)",                                                           TRUE,      "Full D; WAIS-IV Symbol Search (QI); mail response sheet if remote",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Visual Puzzles (QI)",                                                          TRUE,      "Full D; WAIS-IV Visual Puzzles",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Similarities (QI)",                                                            TRUE,      "Full D; WAIS-IV Similarities",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Matrix Reasoning (QI)",                                                        TRUE,      "Full D; WAIS-IV Matrix Reasoning",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Vocabulary (QI)",                                                              TRUE,      "Full D; WAIS-IV Vocabulary",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Digit Span (QI)",                                                              TRUE,      "Full D; WAIS-IV Digit Span",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WAIS-IV Arithmetic (QI)",                                                              TRUE,      "Full D; WAIS-IV Arithmetic",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "Raven’s 2 Progressive Matrices (Nonverbal)",                                           FALSE,     "Full D; nonverbal reasoning (Raven’s 2); optional",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "D-KEFS Color-Word Interference (QI)",                                                 TRUE,      "Full D; D-KEFS CW interference",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "D-KEFS Verbal Fluency (QI)",                                                           FALSE,     "Full D; D-KEFS Verbal Fluency; optional (use when indicated)",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "CVLT-3",                                                                              FALSE,     "Full D; CVLT-3 verbal learning (ages 16+)",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WIAT-4 Word Reading (PPT)",                                                            FALSE,     "Full D; WIAT-4 Word Reading (ages 4–50)",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WIAT-4 Spelling",                                                                      FALSE,     "Full D; WIAT-4 Spelling",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WIAT-4 Numerical Operations",                                                          FALSE,     "Full D; WIAT-4 Numerical Operations",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WIAT-4 Reading Comprehension (PPT)",                                                   FALSE,     "Full D; WIAT-4 Reading Comprehension",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WIAT-4 Math Problem Solving (PPT)",                                                    FALSE,     "Full D; WIAT-4 Math Problem Solving",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WRAT-5 Word Reading (QI; ages 51+)",                                                   FALSE,     "Full D; WRAT-5 Word Reading for 51+ (use WIAT-4 if under 51)",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WRAT-5 Spelling (QI; ages 51+)",                                                       FALSE,     "Full D; WRAT-5 Spelling for 51+",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "WRAT-5 Math Computation (QI; ages 51+)",                                               FALSE,     "Full D; WRAT-5 Math Computation for 51+",
+  "Full D / KP NP Full D",                    "Full D – Cognitive testing",    "MIGDAS-2 Interview (hard copy; ages 3+)",                                              TRUE,      "Full D; MIGDAS-2 direct interview (hard copy)"
+)
+
+# Bind into existing tests and regenerate IDs/labels
+tests <- dplyr::bind_rows(tests, additional_tests)
+
 tests$test_id <- seq_len(nrow(tests))
 
-# Helper labels: prefix required tests with a star
 tests$label <- ifelse(
   tests$required,
-  paste0("\u2605 ", tests$test_name),  # ★
+  paste0("\u2605 ", tests$test_name),
   tests$test_name
 )
 
 battery_choices <- unique(tests$battery_group)
+
+# tests$test_id <- seq_len(nrow(tests))
+
+# Helper labels: prefix required tests with a star
+# tests$label <- ifelse(
+#   tests$required,
+#   paste0("\u2605 ", tests$test_name),  # ★
+#   tests$test_name
+# )
+
+# battery_choices <- unique(tests$battery_group)
 
 # -------------------------------------------------------------------
 # 2. R Markdown template for PDF (you can swap to Quarto if desired)
@@ -298,7 +398,7 @@ echo: false
 
 ## Selected Tests
 
-```{r}
+```{r echo = FALSE}
 library(dplyr)
 library(knitr)
 

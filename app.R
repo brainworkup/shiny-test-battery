@@ -19,6 +19,7 @@ library(purrr)
 library(stringr)
 library(rmarkdown)
 library(knitr)
+library(quarto)
 
 # =============================================================================
 # 1. TEST CATALOG - Single source of truth for all tests
@@ -54,7 +55,7 @@ test_catalog <- tibble::tribble(
  "wais_arithmetic", "WAIS-IV Arithmetic", "Working Memory", "QI", "16-90", "",
  "wais_vocabulary", "WAIS-IV Vocabulary", "Verbal Comprehension", "QI", "16-90", "",
  "wais_similarities", "WAIS-IV Similarities", "Verbal Comprehension", "QI", "16-90", "",
-#  "wais_fsiq_8", "WAIS-IV (8-subtest FSIQ)", "Intelligence", "QI", "16-90", "Full scale IQ",
+ "wais_fsiq_8", "WAIS-IV (8-subtest FSIQ)", "Intelligence", "QI", "16-90", "Full scale IQ",
   
  # --- Intelligence/Cognitive (WISC-V) ---
  "wisc_matrix", "WISC-V Matrix Reasoning", "Fluid Reasoning", "PPT", "6-16", "",
@@ -928,7 +929,9 @@ summaryTableServer <- function(id, selected_tests) {
 test_sheet_qmd <- '
 ---
 title: "Neuropsychological Test Battery"
-format: typst
+format: 
+  typst:
+    toc: false
 params:
   patient_name: ""
   age: ""
@@ -939,9 +942,9 @@ params:
 
 ## Patient Information
 
-**Name:** `r params$patient_name`
-**Age:** `r params$age`
-**Battery Type:** `r params$battery_type`
+**Name:** `r params$patient_name`  \
+**Age:** `r params$age`  \
+**Battery Type:** `r params$battery_type`  \
 
 **Referral Question:**
 `r params$referral`
@@ -952,13 +955,15 @@ params:
 
 ```{r}
 #| echo: false
-#| results: asis
+
 library(dplyr)
 library(knitr)
+library(tibble)
 
 tests <- params$selected_tests
+tests <- tryCatch(as_tibble(tests), error = function(e) tibble())
 
-if (is.null(tests) || nrow(tests) == 0) {
+if (nrow(tests) == 0) {
   cat("No tests selected.")
 } else {
   tests |>
@@ -1132,10 +1137,12 @@ server <- function(input, output, session) {
      paste0(nm, "_test_sheet.pdf")
    },
    content = function(file) {
-     # Write temporary Rmd
-     tmp_dir <- tempdir()
-     qmd_path <- file.path(tmp_dir, "test_sheet.Rmd")
-     writeLines(test_sheet_qmd, con = qmd_path)
+    # Write temporary Quarto file in a non-symlinked temp dir to avoid cleanup issues on macOS
+    tmp_dir <- tempfile(tmpdir = "/var/tmp", pattern = "quarto_test_sheet_")
+    dir.create(tmp_dir, recursive = TRUE, showWarnings = FALSE)
+    on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
+    qmd_path <- file.path(tmp_dir, "test_sheet.qmd")
+    writeLines(test_sheet_qmd, con = qmd_path)
       
      params <- list(
        patient_name   = input$patient_name,
@@ -1145,15 +1152,18 @@ server <- function(input, output, session) {
        selected_tests = selected_tests()
      )
       
-     quarto::quarto_rendder(
-       input       = rmd_path,
-       output_file = file,
-       params      = params,
-       envir       = new.env(parent = globalenv()),
-       quiet       = TRUE
+     outfile <- file.path(tmp_dir, basename(file))
+     quarto::quarto_render(
+       input         = qmd_path,
+       output_format = "typst",
+       output_file   = basename(file),
+       execute_params = params,
+       execute_dir   = tmp_dir,
+       quiet         = TRUE
      )
-   }
- )
+     file.copy(outfile, file, overwrite = TRUE)
+    }
+  )
   
  # CSV Download Handler
  output$download_csv <- downloadHandler(
